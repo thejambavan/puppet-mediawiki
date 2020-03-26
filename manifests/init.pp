@@ -67,6 +67,7 @@ class mediawiki (
   #ensure_resource('class', 'mysql::server',
   #  { 'root_password' => $db_root_password },
   #)
+
   include ::mysql::server
 
   #  ensure_resource('package', $mediawiki::params::packages, {
