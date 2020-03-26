@@ -135,7 +135,7 @@ define mediawiki::instance (
       File {
         ensure => directory,
         owner  => 'root',
-        group  => 'root',
+        group  => $root_group,
         mode   => '0755',
       }
         
