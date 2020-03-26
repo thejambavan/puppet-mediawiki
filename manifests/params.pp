@@ -78,6 +78,11 @@ class mediawiki::params {
       $doc_root           = "${web_dir}/wikis"
       $packages           = ['php5', 'php5-mysql', 'php-xml', 'php-mbstring', 'wget']
     }
+    freebsd:  {
+      $web_dir            = '/usr/local/www'
+      $doc_root           = "${web_dir}/wikis"
+      $packages           = ['php5', 'php5-mysql', 'php-xml', 'php-mbstring', 'wget']
+    }
     default: {
       fail("Module ${module_name} is not supported on ${::operatingsystem}")
     }
