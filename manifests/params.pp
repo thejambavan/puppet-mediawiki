@@ -70,6 +70,7 @@ class mediawiki::params {
       $root_group         = 'root'
       $wget_bin           = '/usr/bin/wget'
       $tar_bin            = '/bin/tar'
+      $php_bin            = '/usr/bin/php'
     }
     debian:  {
       $web_dir            = '/var/www'
@@ -78,6 +79,7 @@ class mediawiki::params {
       $root_group         = 'root'
       $wget_bin           = '/usr/bin/wget'
       $tar_bin            = '/bin/tar'
+      $php_bin            = '/usr/bin/php'
     }
     ubuntu:  {
       $web_dir            = '/var/www'
@@ -86,6 +88,7 @@ class mediawiki::params {
       $root_group         = 'root'
       $wget_bin           = '/usr/bin/wget'
       $tar_bin            = '/bin/tar'
+      $php_bin            = '/usr/bin/php'
     }
     freebsd:  {
       $web_dir            = '/usr/local/www'
@@ -94,6 +97,7 @@ class mediawiki::params {
       $root_group         = 'wheel'
       $wget_bin           = '/usr/local/bin/wget'
       $tar_bin            = '/usr/bin/tar'
+      $php_bin            = '/usr/local/bin/php'
     }
     default: {
       fail("Module ${module_name} is not supported on ${::operatingsystem}")

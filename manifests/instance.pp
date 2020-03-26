@@ -112,7 +112,7 @@ define mediawiki::instance (
       
       exec { "${name}-install_script":
         cwd         => "${mediawiki_install_path}/maintenance",
-        command     => "/usr/bin/php install.php ${name}          \
+        command     => "${php_bin} install.php ${name}          \
 	                ${admin_name}                             \
                         --pass ${admin_password}                  \
                         --email ${admin_email}                    \
