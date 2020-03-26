@@ -82,7 +82,7 @@ class mediawiki (
     ensure  => 'directory',
     path    => $mediawiki::params::conf_dir,
     owner   => 'root',
-    group   => 'root',
+    group   => $root_group,
     mode    => '0755',
     require => Package[$mediawiki::params::packages],
   }  

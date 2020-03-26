@@ -67,21 +67,25 @@ class mediawiki::params {
       $web_dir            = '/var/www/html'
       $doc_root           = "${web_dir}/wikis"
       $packages           = ['php-gd', 'php-mysql', 'php-xml', 'php-mbstring', 'wget']
+      $root_group         = 'root'
     }
     debian:  {
       $web_dir            = '/var/www'
       $doc_root           = "${web_dir}/wikis"
       $packages           = ['php', 'php-mysql', 'php-xml', 'php-mbstring', 'wget']
+      $root_group         = 'root'
     }
     ubuntu:  {
       $web_dir            = '/var/www'
       $doc_root           = "${web_dir}/wikis"
       $packages           = ['php5', 'php5-mysql', 'php-xml', 'php-mbstring', 'wget']
+      $root_group         = 'root'
     }
     freebsd:  {
       $web_dir            = '/usr/local/www'
       $doc_root           = "${web_dir}/wikis"
       $packages           = ['wget']
+      $root_group         = 'wheel'
     }
     default: {
       fail("Module ${module_name} is not supported on ${::operatingsystem}")
