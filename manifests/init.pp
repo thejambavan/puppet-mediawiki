@@ -97,7 +97,7 @@ class mediawiki (
     
   exec { "unpack-mediawiki":
     cwd       => $web_dir,
-    command   => "/bin/tar -xvzf ${tarball_name}",
+    command   => "${tar_bin} -xvzf ${tarball_name}",
     creates   => $mediawiki_install_path,
     subscribe => Exec['get-mediawiki'],
   }

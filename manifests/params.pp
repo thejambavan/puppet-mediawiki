@@ -69,6 +69,7 @@ class mediawiki::params {
       $packages           = ['php-gd', 'php-mysql', 'php-xml', 'php-mbstring', 'wget']
       $root_group         = 'root'
       $wget_bin           = '/usr/bin/wget'
+      $tar_bin            = '/bin/tar'
     }
     debian:  {
       $web_dir            = '/var/www'
@@ -76,6 +77,7 @@ class mediawiki::params {
       $packages           = ['php', 'php-mysql', 'php-xml', 'php-mbstring', 'wget']
       $root_group         = 'root'
       $wget_bin           = '/usr/bin/wget'
+      $tar_bin            = '/bin/tar'
     }
     ubuntu:  {
       $web_dir            = '/var/www'
@@ -83,6 +85,7 @@ class mediawiki::params {
       $packages           = ['php5', 'php5-mysql', 'php-xml', 'php-mbstring', 'wget']
       $root_group         = 'root'
       $wget_bin           = '/usr/bin/wget'
+      $tar_bin            = '/bin/tar'
     }
     freebsd:  {
       $web_dir            = '/usr/local/www'
@@ -90,6 +93,7 @@ class mediawiki::params {
       $packages           = ['wget']
       $root_group         = 'wheel'
       $wget_bin           = '/usr/local/bin/wget'
+      $tar_bin            = '/usr/bin/tar'
     }
     default: {
       fail("Module ${module_name} is not supported on ${::operatingsystem}")
