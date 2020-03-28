@@ -58,11 +58,12 @@ define mediawiki::instance (
   $admin_password = 'puppet',
   $language       = 'en',
   $images_dir     = '',
-  $ssl		  = false,
-  $ssl_chain	  = '',
-  $ssl_key	  = '',
-  $ssl_cert	  = '',
-  $setenv	  = [],
+  $ssl		        = false,
+  $ssl_chain	    = '',
+  $ssl_key	      = '',
+  $ssl_cert	      = '',
+  $setenv	        = [],
+  $php_bin        = $::mediawiki::params::php_bin,
   ) {
 
   if $port == '' {
