@@ -116,7 +116,6 @@ define mediawiki::instance (
         command     => "${php_bin} install.php ${name}          \
 	                ${admin_name}                             \
                         --pass ${admin_password}                  \
-                        --email ${admin_email}                    \
                         --server http://${server_name}            \
                         --scriptpath ${script_path}               \
                         --dbtype mysql                            \
