@@ -24,10 +24,11 @@
 define mediawiki::files (
   $target_dir
   ) {
+  $root_group = $::mediawiki::params::root_group
   file { $name:
     ensure  => link,
     owner   => 'root',
-    group   => 'root',
+    group   => $root_group,
     mode    => '0755',
     target  => gen_target_path($target_dir, $name),
   }
