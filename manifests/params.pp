@@ -24,7 +24,6 @@ class mediawiki::params {
   $major              = '1.33'
   $minor              = '0'
   $tarball_url        = "http://releases.wikimedia.org/mediawiki/$major/mediawiki-$major.$minor.tar.gz"
-  $conf_dir           = '/etc/mediawiki'
   $apache_daemon      = '/usr/sbin/apache2'
   $installation_files = ['api.php',
                          'api.php5',
@@ -71,6 +70,7 @@ class mediawiki::params {
       $wget_bin           = '/usr/bin/wget'
       $tar_bin            = '/bin/tar'
       $php_bin            = '/usr/bin/php'
+      $conf_dir           = '/etc/mediawiki'
     }
     debian:  {
       $web_dir            = '/var/www'
@@ -80,6 +80,7 @@ class mediawiki::params {
       $wget_bin           = '/usr/bin/wget'
       $tar_bin            = '/bin/tar'
       $php_bin            = '/usr/bin/php'
+      $conf_dir           = '/etc/mediawiki'
     }
     ubuntu:  {
       $web_dir            = '/var/www'
@@ -89,6 +90,7 @@ class mediawiki::params {
       $wget_bin           = '/usr/bin/wget'
       $tar_bin            = '/bin/tar'
       $php_bin            = '/usr/bin/php'
+      $conf_dir           = '/etc/mediawiki'
     }
     freebsd:  {
       $web_dir            = '/usr/local/www'
@@ -98,6 +100,7 @@ class mediawiki::params {
       $wget_bin           = '/usr/local/bin/wget'
       $tar_bin            = '/usr/bin/tar'
       $php_bin            = '/usr/local/bin/php'
+      $conf_dir           = '/usr/local/etc/mediawiki'
     }
     default: {
       fail("Module ${module_name} is not supported on ${::operatingsystem}")
