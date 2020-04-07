@@ -119,7 +119,7 @@ define mediawiki::instance (
                         --server http://${server_name}            \
                         --scriptpath ${script_path}               \
                         --dbtype mysql                            \
-                        --dbserver localhost                      \
+                        --dbserver 127.0.0.1                      \
                         --installdbuser root                      \
                         --installdbpass ${db_root_password}       \
                         --dbname ${db_name}                       \

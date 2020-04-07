@@ -95,7 +95,7 @@ class mediawiki::params {
     freebsd:  {
       $web_dir            = '/usr/local/www'
       $doc_root           = "${web_dir}/wikis"
-      $packages           = ['wget']
+      $packages           = ['wget', 'php74-pdo_mysql', 'php74-gd', 'php74-pecl-imagick']
       $root_group         = 'wheel'
       $wget_bin           = '/usr/local/bin/wget'
       $tar_bin            = '/usr/bin/tar'
