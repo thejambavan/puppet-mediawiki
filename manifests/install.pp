@@ -39,9 +39,6 @@
 # Copyright 2018 Seth Tunstall
 #
 class mediawiki::install (
-  $server_name,
-  $admin_email,
-  $db_root_password,
   $doc_root       = $mediawiki::params::doc_root,
   $tarball_url    = $mediawiki::params::tarball_url,
   $package_ensure = 'latest',
