@@ -65,7 +65,7 @@ class mediawiki::params {
     redhat, centos:  {
       $web_dir            = '/var/www/html'
       $doc_root           = "${web_dir}/wikis"
-      $packages           = ['php72-php-gd', 'php72-php-mysql', 'php72-php-xml', 'php72-php-mbstring', 'wget', 'php72-php-pgsql']
+      $packages           = ['php71-php-gd', 'php71-php-mysql', 'php71-php-xml', 'php71-php-mbstring', 'wget', 'php71-php-pgsql']
       $root_group         = 'root'
       $wget_bin           = '/usr/bin/wget'
       $tar_bin            = '/bin/tar'
@@ -95,7 +95,7 @@ class mediawiki::params {
     freebsd:  {
       $web_dir            = '/usr/local/www'
       $doc_root           = "${web_dir}/wikis"
-      $packages           = ['wget', 'php72-pdo_mysql', 'php72-gd', 'php72-pecl-imagick']
+      $packages           = ['wget', 'php71-pdo_mysql', 'php71-gd', 'php71-pecl-imagick']
       $root_group         = 'wheel'
       $wget_bin           = '/usr/local/bin/wget'
       $tar_bin            = '/usr/bin/tar'
