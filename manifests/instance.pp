@@ -58,27 +58,8 @@ define mediawiki::instance (
   $admin_password = 'puppet',
   $language       = 'en',
   $images_dir     = '',
-  $ssl		        = false,
-  $ssl_chain	    = '',
-  $ssl_key	      = '',
-  $ssl_cert	      = '',
-  $setenv	        = [],
   $php_bin        = $::mediawiki::params::php_bin,
-  ) {
-
-  if $port == '' {
-    if $ssl {
-      $server_port = 443
-    } else {
-      $server_port = 80
-    }
-  } else {
-    $server_port = $port
-  }
-
-  validate_re($ensure, '^(present|absent|deleted)$',
-  "${ensure} is not supported for ensure.
-  Allowed values are 'present', 'absent', and 'deleted'.")
+) {
 
   include mediawiki::params
 
@@ -94,135 +75,73 @@ define mediawiki::instance (
   $mediawiki_install_files = $mediawiki::params::installation_files
   $apache_daemon           = $mediawiki::params::apache_daemon
 
-  # Configure according to whether the wiki instance will be accessed
-  # through a unique host name or through a unique path
-  $vhost_root = $vhost_type ? {
-    'path' => $doc_root,
-    'host' => "$doc_root/$name",
-  }
-
-  $script_path = $vhost_type ? {
-    'path' => "/${name}",
-    'host' => "''",
-  }
-
   # Figure out how to improve db security (manually done by
   # mysql_secure_installation)
-  case $ensure {
-    'present', 'absent': {
-      
-      exec { "${name}-install_script":
-        cwd         => "${mediawiki_install_path}/maintenance",
-        command     => "${php_bin} install.php ${name}          \
-	                ${admin_name}                             \
-                        --pass ${admin_password}                  \
-                        --server http://${server_name}            \
-                        --scriptpath ${script_path}               \
-                        --dbtype mysql                            \
-                        --dbserver 127.0.0.1                      \
-                        --installdbuser root                      \
-                        --installdbpass ${db_root_password}       \
-                        --dbname ${db_name}                       \
-                        --dbuser ${db_user}                       \
-                        --dbpass ${db_password}                   \
-                        --confpath ${mediawiki_conf_dir}/${name}  \
-                        --lang ${language}",
-        creates     => "${mediawiki_conf_dir}/${name}/LocalSettings.php",
-        subscribe   => File["${mediawiki_conf_dir}/${name}/images"],
-      }
+  exec { "${name}-install_script":
+    cwd       => "${mediawiki_install_path}/maintenance",
+    command   => "${php_bin} install.php ${name} \
+    ${admin_name} \
+    --pass ${admin_password} \
+    --server http://${server_name} \
+    --scriptpath ${script_path} \
+    --dbtype postgres \
+    --dbserver 127.0.0.1 \
+    --installdbuser root \
+    --installdbpass ${db_root_password} \
+    --dbname ${db_name} \
+    --dbuser ${db_user} \
+    --dbpass ${db_password} \
+    --confpath ${mediawiki_conf_dir}/${name} \
+    --lang ${language}",
+    creates   => "${mediawiki_conf_dir}/${name}/LocalSettings.php",
+    subscribe => File["${mediawiki_conf_dir}/${name}/images"],
+  }
 
-      # Ensure resource attributes common to all resources
-      File {
-        ensure => directory,
-        owner  => 'root',
-        group  => $root_group,
-        mode   => '0755',
-      }
-        
-      # MediaWiki instance directory
-      file { "${mediawiki_conf_dir}/${name}":
-        ensure   => directory,
-      }
+  # Ensure resource attributes common to all resources
+  File {
+    ensure => directory,
+    owner  => 'root',
+    group  => 'root',
+    mode   => '0755',
+  }
 
-      # Each instance needs a separate folder to upload images
-      $images_group = $::operatingsystem ? {
-          /(?i)(redhat|centos)/ => 'apache',
-          /(?i)(debian|ubuntu)/ => 'www-data',
-          default               => undef,
-      }
+  # MediaWiki instance directory
+  file { "${mediawiki_conf_dir}/${name}":
+    ensure => directory,
+  }
 
-      if $images_dir == '' {
-	file { "${mediawiki_conf_dir}/${name}/images":
-	  ensure   => directory,
-	  group => $images_group
-	}
-      } else {
-	file { "${mediawiki_conf_dir}/${name}/images":
-	  ensure => link,
-	  target => $images_dir,
-	  group  => $images_group
-	}
-      }
+  # Each instance needs a separate folder to upload images
+  $images_group = $::operatingsystem ? {
+    /(?i)(redhat|centos)/ => 'apache',
+    /(?i)(debian|ubuntu)/ => 'www-data',
+    default               => undef,
+  }
 
-      # Ensure that mediawiki configuration files are included in each instance.
-      mediawiki::symlinks { $name:
-        conf_dir      => $mediawiki_conf_dir,
-        install_files => $mediawiki_install_files,
-        target_dir    => $mediawiki_install_path,
-      }
-
-      # Symlink for the mediawiki instance directory
-      file { "${doc_root}/${name}":
-        ensure   => link,
-        target   => "${mediawiki_conf_dir}/${name}",
-        require  => File["${mediawiki_conf_dir}/${name}"],
-      }
-     
-      # Each instance has a separate vhost configuration
-      apache::vhost { $name:
-        port          => $server_port,
-        docroot       => $vhost_root,
-        serveradmin   => $admin_email,
-        servername    => $server_name,
-        vhost_name    => $ip,
-        serveraliases => $server_aliases,
-        ensure        => $ensure,
-	ssl           => $ssl,
-	ssl_chain     => $ssl_chain,
-	ssl_key       => $ssl_key,
-	ssl_cert      => $ssl_cert,
-	setenv        => $setenv,
-      }
+  if $images_dir == '' {
+    file { "${mediawiki_conf_dir}/${name}/images":
+      ensure => directory,
+      group  => $images_group
     }
-    'deleted': {
-      
-      # Remove the MediaWiki instance directory if it is present
-      file { "${mediawiki_conf_dir}/${name}":
-        ensure  => absent,
-        recurse => true,
-        purge   => true,
-        force   => true,
-      }
-
-      # Remove the symlink for the mediawiki instance directory
-      file { "${doc_root}/${name}":
-        ensure   => absent,
-        recurse  => true,
-      }
-
-      mysql::db { $db_name:
-        user     => $db_user,
-        password => $db_password,
-        host     => 'localhost',
-        grant    => ['all'],
-        ensure   => 'absent',
-      }
-
-      apache::vhost { $name:
-        port          => $port,
-        docroot       => $vhost_root,
-        ensure        => 'absent',
-      } 
+  } else {
+    file { "${mediawiki_conf_dir}/${name}/images":
+      ensure => link,
+      target => $images_dir,
+      group  => $images_group
     }
   }
+
+  # Ensure that mediawiki configuration files are included in each instance.
+  mediawiki::symlinks { $name:
+    conf_dir      => $mediawiki_conf_dir,
+    install_files => $mediawiki_install_files,
+    target_dir    => $mediawiki_install_path,
+  }
+
+  # Symlink for the mediawiki instance directory
+  file { "${doc_root}/${name}":
+    ensure  => link,
+    target  => "${mediawiki_conf_dir}/${name}",
+    require => File["${mediawiki_conf_dir}/${name}"],
+  }
+
 }
