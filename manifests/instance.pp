@@ -86,7 +86,7 @@ define mediawiki::instance (
     --scriptpath ${script_path} \
     --dbtype postgres \
     --dbserver 127.0.0.1 \
-    --installdbuser root \
+    --installdbuser  \
     --installdbpass ${db_root_password} \
     --dbname ${db_name} \
     --dbuser ${db_user} \

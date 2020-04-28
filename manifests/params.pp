@@ -65,7 +65,7 @@ class mediawiki::params {
     redhat, centos:  {
       $web_dir            = '/var/www/html'
       $doc_root           = "${web_dir}/wikis"
-      $packages           = ['php71-php-gd', 'php71-php-mysql', 'php71-php-xml', 'php71-php-mbstring', 'wget']
+      $packages           = ['php74-php-gd', 'php74-php-mysql', 'php74-php-xml', 'php74-php-mbstring', 'wget', 'php74-php-pgsql']
       $root_group         = 'root'
       $wget_bin           = '/usr/bin/wget'
       $tar_bin            = '/bin/tar'
