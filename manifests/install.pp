@@ -62,6 +62,9 @@ class mediawiki::install (
   
   # Specify dependencies
   # TODO: Do the DB installation first
+  # TODO: Drop logo file in place
+  # TODO: Either put 'TLS_REQCERT     never' in /etc/openldap/ldap.conf
+  # or do proper CA cert distribution (won't happen in a self-signed cert env.)
 
   #  ensure_resource('package', $mediawiki::params::packages, {
   #    ensure  => $package_ensure,
