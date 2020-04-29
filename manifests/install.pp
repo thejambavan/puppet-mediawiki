@@ -45,6 +45,13 @@ class mediawiki::install (
   $max_memory     = '2048'
   ) inherits mediawiki::params {
 
+  # SELinux Booleans
+  selinux::boolean { 'httpd_use_sasl': }
+  selinux::boolean { 'httpd_can_connect_ldap': }
+  selinux::boolean { 'httpd_can_sendmail': }
+  selinux::boolean { 'httpd_can_network_connect_db': }
+
+
   $web_dir = $mediawiki::params::web_dir
 
   # Parse the url
